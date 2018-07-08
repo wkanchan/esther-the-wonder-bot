@@ -2,9 +2,12 @@
   "name": "esther",
   "version": "1.0.0",
   "description": "My personal finance bot",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src/ -d lib/",
+    "prepublish": "npm run build",
+    "flow": "flow"
   },
   "author": "Knott",
   "license": "ISC",
@@ -12,5 +15,10 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "request": "^2.87.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.76.0"
   }
 }
