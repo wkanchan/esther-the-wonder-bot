@@ -25,7 +25,6 @@ app.listen(process.env.PORT || 1337, () => console.log(MESSAGE_LISTENING));
 // Creates the endpoint for our webhook
 app.post(WEBHOOK_ENDPOINT_NAME, (req, res) => {
   const body = req.body;
-  console.log(req);
   if (body.object === WEBHOOK_PAGE_SUBSCRIPTION_EVENT) {
     // Iterates over each entry - there may be multiple if batched
     body.entry.forEach(entry => {
@@ -55,7 +54,7 @@ function getCryptoRates(res): void {
   let message = '';
   request(BX_API_URL, (error: ?string, response, body) => {
     if (error) {
-      console.log('error:', error);
+      console.log('ERROR:', error);
       return;
     }
 
