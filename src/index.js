@@ -40,7 +40,7 @@ app.post(WEBHOOK_ENDPOINT_NAME, (req, res) => {
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhookEvent.message) {
-        handleMessage(senderPSID, webhookEvent.message);
+        handleMessage(senderPSID, webhookEvent.message.text);
       } else if (webhookEvent.postback) {
         // handlePostback(senderPSID, webhookEvent.postback);
       }
@@ -72,8 +72,8 @@ app.get(WEBHOOK_ENDPOINT_NAME, (req, res) => {
 });
 
 // Handles messages sent to the bot
-function handleMessage(senderPSID, receivedMessage: string) {
-  switch (receivedMessage) {
+function handleMessage(senderPSID, text: string) {
+  switch(text) {
     case 'c':
       getCryptoRates(senderPSID);
       break;
