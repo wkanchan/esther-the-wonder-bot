@@ -89,16 +89,16 @@ function getCryptoRates(senderPSID): void {
       return;
     }
 
-    let message = '';
+    let text = '';
     const parsed = JSON.parse(body);
     Object.keys(parsed).forEach(key => {
       const entry = parsed[key];
       if (isSubscribedPair(entry.primary_currency, entry.secondary_currency)) {
-        message += `${entry.primary_currency}:${entry.secondary_currency} = ${entry.last_price}\n`;
+        text += `${entry.primary_currency}:${entry.secondary_currency} = ${entry.last_price}\n`;
       }
     });
 
-    callSendAPI(senderPSID, message);
+    callSendAPI(senderPSID, {"text": text});
   });
 }
 
@@ -107,7 +107,7 @@ function isSubscribedPair(primary: string, secondary: string): boolean {
 }
 
 // Sends response messages via the Send API
-function callSendAPI(senderPSID, message: string) {
+function callSendAPI(senderPSID, message) {
   // Construct the message body
   const requestBody = {
     "recipient": {
@@ -125,8 +125,7 @@ function callSendAPI(senderPSID, message: string) {
     "json": requestBody,
   }, (err, res, body) => {
     if (!err) {
-      console.log('message sent!')
-      console.log(body);
+      console.log('message send response:', body);
     } else {
       console.error("Unable to send message:" + err);
     }
