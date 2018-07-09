@@ -11,7 +11,7 @@ const
 // Configs
 const BX_API_URL = 'https://bx.in.th/api/';
 const VERIFY_TOKEN = 'ILoveAnimals';
-const PAGE_ACCESS_TOKEN = 'EAADfDhyfTdgBALhiOI2OZB2igl3WpMxZCx8Cvm2ZCnDA2nUH0RmHnhni6oCudWiR59Priia7JqMKMV54VkV1YgwI8tvTpjk07Wconst OFBiuYX5aKoVPeXzDR5B8nJTEBB5fL7IrNtInluhSGqeiZBQeBGRvxpvZBxvLqfFeGfNOR9kQZDZD';
+const PAGE_ACCESS_TOKEN = 'EAADfDhyfTdgBAETKRpXN4SYJlZAZCFKc97G8pdNfGAPZAfzYhPnFN8mDBSFohZB6ZAmXWhSIZB9Wb2JdOcQdTLLqFwcRsYPNS6UDj9nHajrubSPNOR6G5PSFl4QrmSvvOg7E7W2B6HjvqTsfmC5JazMJY1AgerwY7AKCwHrjLwmwZDZD';
 const MESSAGE_LISTENING = 'Esther is listening.';
 const MESSAGE_HELP = 'c: crypto\nothers: display this message';
 const WEBHOOK_ENDPOINT_NAME = '/webhook';
@@ -40,9 +40,9 @@ app.post(WEBHOOK_ENDPOINT_NAME, (req, res) => {
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhookEvent.message) {
-        handleMessage(senderPSID, webhookEvent.message.text);
+        handleMessage(senderPSID, webhookEvent.message);
       } else if (webhookEvent.postback) {
-        // handlePostback(senderPSID, webhookEvent.postback);
+        handlePostback(senderPSID, webhookEvent.postback);
       }
     });
 
@@ -72,8 +72,8 @@ app.get(WEBHOOK_ENDPOINT_NAME, (req, res) => {
 });
 
 // Handles messages sent to the bot
-function handleMessage(senderPSID, text: string) {
-  switch(text) {
+function handleMessage(senderPSID, message) {
+  switch(message.text) {
     case 'c':
       getCryptoRates(senderPSID);
       break;
@@ -131,3 +131,6 @@ function callSendAPI(senderPSID, message: string) {
     }
   });
 }
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {}
