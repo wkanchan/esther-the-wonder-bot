@@ -78,7 +78,7 @@ function handleMessage(senderPSID, message) {
       getCryptoRates(senderPSID);
       break;
     default:
-      callSendAPI(senderPSID, MESSAGE_HELP);
+      callSendAPI(senderPSID, {"text": MESSAGE_HELP});
   }
 }
 
@@ -94,7 +94,7 @@ function getCryptoRates(senderPSID): void {
     Object.keys(parsed).forEach(key => {
       const entry = parsed[key];
       if (isSubscribedPair(entry.primary_currency, entry.secondary_currency)) {
-        text += `${entry.primary_currency}:${entry.secondary_currency} = ${entry.last_price}\n`;
+        text += `${entry.primary_currency}:${entry.secondary_currency} = ${entry.last_price.toLocaleString()}\n`;
       }
     });
 
