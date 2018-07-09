@@ -11,23 +11,21 @@ const
 // Configs
 const
   BX_API_URL = 'https://bx.in.th/api/',
-  VERIFY_TOKEN = 'ILoveAnimalsEspeciallyGiraffesAndPigs',
+  VERIFY_TOKEN = 'ILoveAnimals',
   MESSAGE_LISTENING = 'Esther is listening.',
-  MESSAGE_UNKNOWN_COMMAND = "I don't know this command. Oink!",
-  MESSAGE_HELP = 'Esther wants to help you! Here are commands I know about:\n' +
-    '  c: crypto\n' +
-    '  others: display this help',
+  MESSAGE_HELP = 'c: crypto\nothers: display this message',
   WEBHOOK_ENDPOINT_NAME = '/webhook',
   WEBHOOK_VERIFICATION_RESPONSE = 'WEBHOOK_VERIFIED',
   WEBHOOK_VERIFICATION_MODE = 'subscribe',
   WEBHOOK_PAGE_SUBSCRIPTION_EVENT = 'page',
-  CURRENCY_PAIRS = {'THB': {'BTC': true, 'ZMN': true}};
+  CURRENCY_PAIRS = {'THB': {'BTC': true, 'ETH': true, 'ZMN': true}};
 
 app.listen(process.env.PORT || 1337, () => console.log(MESSAGE_LISTENING));
 
 // Creates the endpoint for our webhook
 app.post(WEBHOOK_ENDPOINT_NAME, (req, res) => {
   const body = req.body;
+  console.log(req);
   if (body.object === WEBHOOK_PAGE_SUBSCRIPTION_EVENT) {
     // Iterates over each entry - there may be multiple if batched
     body.entry.forEach(entry => {
@@ -78,24 +76,16 @@ function isSubscribedPair(primary: string, secondary: string): boolean {
 
 // Adds support for GET requests to our webhook
 app.get(WEBHOOK_ENDPOINT_NAME, (req, res) => {
-  // Parse the query params
   const mode: ?string = req.query['hub.mode'];
   const token: ?string = req.query['hub.verify_token'];
   const challenge: ?string = req.query['hub.challenge'];
 
-  // Checks if a token and mode is in the query string of the request
-  if (mode && token) {
-
-    // Checks the mode and token sent is correct
-    if (mode === WEBHOOK_VERIFICATION_MODE && token === VERIFY_TOKEN) {
-
-      // Responds with the challenge token from the request
-      console.log(WEBHOOK_VERIFICATION_RESPONSE);
-      res.status(200).send(challenge);
-
-    } else {
-      // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
-    }
+  if (mode === WEBHOOK_VERIFICATION_MODE && token === VERIFY_TOKEN) {
+    // Responds with the challenge token from the request
+    console.log(WEBHOOK_VERIFICATION_RESPONSE);
+    res.status(200).send(challenge);
+  } else {
+    // Responds with '403 Forbidden' if verify tokens do not match
+    res.sendStatus(403);
   }
 });
